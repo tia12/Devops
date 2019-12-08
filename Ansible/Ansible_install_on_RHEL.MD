@@ -51,10 +51,11 @@
    ```sh
    mkdir /etc/ansible
    ```
-1. Create ansible administration on all the target servers and add him in the sodoers file so that you can copy the publiic key from ansible host to the target servers
+1. Create ansible administration on all the target servers and add him in the sodoers file so that you can copy the publiic key from ansible host to the target servers and add him to the docker group so that he can run docker commands
    ```sh 
    useradd ansadmin
    passwd ansadmin
+   usermod -aG docker ansadmin
    ```
 1. Log in as a ansadmin user on master and generate ssh key (on Control node)
    ```sh 
@@ -62,8 +63,13 @@
    ```
 1. Copy keys onto all ansible managed hosts (on Control node)
    ```sh 
-   ssh-copy-id ansadmin@<target-server>
-   Example: ssh-copy-id ansadmin@10.0.0.18
+   ssh-copy-id ansadmin@<target-server IP address>   (we need ansadmin password on the target server)
+   ssh ansadmin@<target-server IP address>
+   Example: ssh ansadmin@10.0.0.7
+   
+   ssh-copy-id <target-server IP address>            (we need root password on the target server)
+   ssh <target-server IP address>
+   Example: ssh 10.0.0.7
    ```
 ### Validation test
 
@@ -76,3 +82,8 @@
    ```sh 
    ansible all -m ping
    ```
+1. Install docker on ansible host as well because ansible admin might be running some docker commands with the script and add ansadmin to the docker group 
+  ```
+   usermod -aG docker ansadmin
+   ```
+  
