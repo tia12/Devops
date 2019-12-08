@@ -1,0 +1,8 @@
+ - *Post-build Actions*
+   - Send build artifacts over SSH
+     - *SSH Publishers*
+      - SSH Server Name: `ansible-server`
+       - `Transfers` >  `Transfer set`
+            - Source files: `webapp/target/*.war`
+	       - Remove prefix: `webapp/target`
+	       - Remote directory: `//opt//docker`
