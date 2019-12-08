@@ -33,6 +33,8 @@
    # sed command replaces "PasswordAuthentication no to yes" without editing file 
     sed -ie 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
     sudo service sshd reload
+    or 
+    systemctl reload sshd.service
    ``` 
 
     #### Install Ansible as a ansadmin user (on Control node)
@@ -45,7 +47,15 @@
    ```sh
    ansible --version
    ```
-
+1. We need to create a configuration file directory because we do not have one in this version
+   ```sh
+   mkdir /etc/ansible
+   ```
+1. Create ansible administration on all the target servers and add him in the sodoers file so that you can copy the publiic key from ansible host to the target servers
+   ```sh 
+   useradd ansadmin
+   passwd ansadmin
+   ```
 1. Log in as a ansadmin user on master and generate ssh key (on Control node)
    ```sh 
    ssh-keygen
@@ -53,11 +63,15 @@
 1. Copy keys onto all ansible managed hosts (on Control node)
    ```sh 
    ssh-copy-id ansadmin@<target-server>
+   Example: ssh-copy-id ansadmin@10.0.0.18
    ```
 ### Validation test
 
 1. Create a directory /etc/ansible and create an inventory file called "hosts" add control node IP address in it. 
-   
+    ```sh 
+   cd /etc/ansible
+   touch hosts
+   ```
 1. Run ansible command as ansadmin user it should be successful (Master)
    ```sh 
    ansible all -m ping
