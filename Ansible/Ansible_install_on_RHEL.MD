@@ -49,7 +49,7 @@
    ```
 1. We need to create a configuration file directory because we do not have one in this version
    ```sh
-   mkdir /etc/ansible
+   sudo mkdir /etc/ansible
    ```
 1. Create ansible administration on all the target servers and add him in the sodoers file so that you can copy the publiic key from ansible host to the target servers and add him to the docker group so that he can run docker commands
    ```sh 
@@ -65,18 +65,22 @@
    ```sh 
    ssh-copy-id ansadmin@<target-server IP address>   (we need ansadmin password on the target server)
    ssh ansadmin@<target-server IP address>
-   Example: ssh ansadmin@10.0.0.7
+   Example:
+   ssh-copy-id ansadmin@10.0.0.7
+   ssh ansadmin@10.0.0.7
    
    ssh-copy-id <target-server IP address>            (we need root password on the target server)
    ssh <target-server IP address>
-   Example: ssh 10.0.0.7
+   Example:
+   ssh-copy-id root@10.0.0.7
+   ssh 10.0.0.7
    ```
 ### Validation test
 
 1. Create a directory /etc/ansible and create an inventory file called "hosts" add control node IP address in it. 
     ```sh 
    cd /etc/ansible
-   touch hosts
+   sudo touch hosts
    ```
 1. Run ansible command as ansadmin user it should be successful (Master)
    ```sh 
